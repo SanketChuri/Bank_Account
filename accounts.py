@@ -20,21 +20,25 @@ class BasicAccount:
     #     return f"({month}/{year % 100:02d})"
     
     def get_ac_num(self):
-        ac_num = BasicAccount.account_number_counter
+        Accou_num = BasicAccount.account_number_counter
+        # print('Accou_num',Accou_num)
         BasicAccount.account_number_counter += 1
-        return ac_num
+        return str(Accou_num)
 
     def __init__(self, acc_name: str, opening_balance: float):
         self.name = acc_name
-        self.ac_num = self.get_ac_num()
+        self.ac_num = (self.get_ac_num())
+        # print('self.ac_num',self.ac_num)
         self.balance = opening_balance
 
     def __str__(self):
         return f"Account Name: {self.name}, Account Number: {self.ac_num}, Balance: {self.balance}"
 
     def deposit(self, amount: float):
-        self.balance += amount
-        return amount
+        if amount <= 0:
+            print("Deposit amount must be positive")
+        else:
+            self.balance += amount
 
     def withdraw(self, amount: float):
             if amount <= self.balance:
@@ -42,8 +46,7 @@ class BasicAccount:
                 print(f"{self.name} has withdrawn £{amount}. New balance is £{self.balance}")
                 return 
             else:
-                print(f"Can not withdraw £{amount}")
-                return 
+                raise ValueError(f"Can not withdraw £{amount}")
                 
 
     def get_available_balance(self):
@@ -62,22 +65,25 @@ class BasicAccount:
     
 
     def issue_new_card(self):
-
         self.card_num = str(random.randint(1000000000000000, 9999999999999999))
         expire_year = datetime.date.today().year + 3
         self.card_exp = (datetime.date.today().month,expire_year % 100)
         return self.card_num,self.card_exp
     
     def close_account(self):
-        self.balance = 0.0
-        return True
+        if self.balance < 0:
+            print(f"Can not close account due to customer being overdrawn by £{abs(self.balance)}")
+            return False
+        else:
+            self.withdraw(self.balance)
+            return True
     
 # account1 = BasicAccount( "John Doe", 1000)
 # account2 = BasicAccount( "Rose Ado", 1000)
 # account3 = BasicAccount( "Mary lolu", 1000)
-# print(account1.issue_new_card())
-# print(account2)
-# print(account3)
+# print('account1',type(account1.ac_num),type(account1.get_ac_num()))
+# print('account2',account2.ac_num)
+# print('account3',account3.ac_num)
     
 class PremiumAccount(BasicAccount):
     def __init__(self, ac_name: str, opening_balance: float, initial_overdraft: float):
@@ -86,7 +92,7 @@ class PremiumAccount(BasicAccount):
         self.overdraft_limit = initial_overdraft
 
     def __str__(self):
-        return f"Account Name: {self.name}, Account Number: {self.ac_num}, Balance: {self.balance}, Overdraft: {self.overdraft}, Overdraft Limit: {self.overdraft_limit}"
+        return f"Account Name: {self.name}, Balance: {self.balance}, Overdraft: {self.overdraft}, Overdraft Limit: {self.overdraft_limit}"
 
     def set_overdraft_limit(self, new_limit: float):
         self.overdraft_limit = new_limit
