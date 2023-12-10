@@ -20,19 +20,18 @@ class BasicAccount:
     #     return f"({month}/{year % 100:02d})"
 
     def get_ac_num(self):
-        Accou_num = BasicAccount.account_number_counter
-        # print('Accou_num',Accou_num)
+        self.ac_num = BasicAccount.account_number_counter
         BasicAccount.account_number_counter += 1
-        return str(Accou_num)
+        return str(self.ac_num)
 
     def __init__(self, acc_name: str, opening_balance: float):
         self.name = acc_name
-        self.ac_num = (self.get_ac_num())
+        # self.ac_num = int(self.get_ac_num())
         # print('self.ac_num',self.ac_num)
         self.balance = opening_balance
 
     def __str__(self):
-        return f"Account Name: {self.name}, Account Number: {self.ac_num}, Balance: {self.balance}"
+        return f"Account Name: {self.name}, Account Number: {self.get_ac_num()}, Balance: {self.balance}"
 
     def deposit(self, amount: float):
         if amount <= 0:
@@ -43,7 +42,7 @@ class BasicAccount:
     def withdraw(self, amount: float):
         if amount <= self.balance:
             self.balance -= amount
-            print(f"{self.name} has withdrawn £{amount}. New balance is £{self.balance}")
+            print(f"{self.name} has withdrawn £{amount}.New balance is £{self.balance}")
             return 
         else:
             raise ValueError(f"Can not withdraw £{amount}")
@@ -78,9 +77,9 @@ class BasicAccount:
 # account1 = BasicAccount( "John Doe", 1000)
 # account2 = BasicAccount( "Rose Ado", 1000)
 # account3 = BasicAccount( "Mary lolu", 1000)
-# print('account1',type(account1.ac_num),type(account1.get_ac_num()))
-# print('account2',account2.ac_num)
-# print('account3',account3.ac_num)
+# print('account1',account1.get_ac_num())
+# print('account2',account2.get_ac_num())
+# print('account3',account3.get_ac_num())
 
 
 class PremiumAccount(BasicAccount):
